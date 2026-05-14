@@ -3,17 +3,12 @@ import 'package:flutter/material.dart';
 import '../models/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
-
   final RestaurantModel restaurant;
 
-  const RestaurantCard({
-    super.key,
-    required this.restaurant,
-  });
+  const RestaurantCard({super.key, required this.restaurant});
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       width: 220,
       margin: const EdgeInsets.only(right: 16),
@@ -27,11 +22,8 @@ class RestaurantCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(16),
-            ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
 
             child: Image.network(
               restaurant.imageUrl,
@@ -41,46 +33,46 @@ class RestaurantCard extends StatelessWidget {
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(12),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
 
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-              children: [
+                children: [
+                  Text(
+                    restaurant.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
 
-                Text(
-                  restaurant.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                Text(restaurant.address),
+                  Text(
+                    restaurant.address,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
 
-                const SizedBox(height: 8),
+                  const Spacer(),
 
-                Row(
-                  children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.orange, size: 18),
 
-                    const Icon(
-                      Icons.star,
-                      color: Colors.orange,
-                      size: 18,
-                    ),
+                      const SizedBox(width: 4),
 
-                    const SizedBox(width: 4),
-
-                    Text(
-                      restaurant.rating.toString(),
-                    ),
-                  ],
-                ),
-              ],
+                      Text(restaurant.rating.toString()),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
