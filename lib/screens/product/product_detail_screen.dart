@@ -8,7 +8,6 @@ import '../checkout/checkout_screen.dart';
 import '../cart/cart_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-
   final ProductModel product;
 
   const ProductDetailScreen({
@@ -18,22 +17,14 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
         title: Text(product.name),
       ),
-
       body: SingleChildScrollView(
-
         child: Column(
-
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Image.network(
               product.imageUrl,
               width: double.infinity,
@@ -42,20 +33,12 @@ class ProductDetailScreen extends StatelessWidget {
             ),
 
             Padding(
-
               padding: const EdgeInsets.all(16),
-
               child: Column(
-
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Text(
-
                     product.name,
-
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -64,21 +47,12 @@ class ProductDetailScreen extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  Text(
-
-                    product.description,
-
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+                  Text(product.description),
 
                   const SizedBox(height: 24),
 
                   const Text(
-
                     'Información nutricional',
-
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -87,93 +61,46 @@ class ProductDetailScreen extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
-                  _macroTile(
-                    'Proteínas',
-                    '${product.protein}g',
-                  ),
-
-                  _macroTile(
-                    'Carbohidratos',
-                    '${product.carbs}g',
-                  ),
-
-                  _macroTile(
-                    'Grasas',
-                    '${product.fat}g',
-                  ),
-
-                  _macroTile(
-                    'Calorías',
-                    '${product.calories} kcal',
-                  ),
+                  _row('Proteínas', '${product.protein}g'),
+                  _row('Carbohidratos', '${product.carbs}g'),
+                  _row('Grasas', '${product.fat}g'),
+                  _row('Calorías', '${product.calories} kcal'),
 
                   const SizedBox(height: 32),
 
                   Row(
-
                     children: [
-
-                      // ADD TO CART
-
                       Expanded(
-
                         child: ElevatedButton(
-
                           onPressed: () {
-
-                            context
-                                .read<CartProvider>()
-                                .addToCart(product);
-
-                            // GO TO CART
+                            context.read<CartProvider>().addToCart(product);
 
                             Navigator.push(
-
                               context,
-
                               MaterialPageRoute(
-
-                                builder: (_) =>
-                                    const CartScreen(),
+                                builder: (_) => const CartScreen(),
                               ),
                             );
                           },
-
-                          child: const Text(
-                            'Agregar',
-                          ),
+                          child: const Text('Agregar'),
                         ),
                       ),
 
                       const SizedBox(width: 12),
 
-                      // BUY NOW
-
                       Expanded(
-
                         child: ElevatedButton(
-
                           onPressed: () {
-
-                            context
-                                .read<CartProvider>()
-                                .addToCart(product);
+                            context.read<CartProvider>().addToCart(product);
 
                             Navigator.push(
-
                               context,
-
                               MaterialPageRoute(
-
-                                builder: (_) =>
-                                    const CheckoutScreen(),
+                                builder: (_) => const CheckoutScreen(),
                               ),
                             );
                           },
-
-                          child: const Text(
-                            'Comprar ahora',
-                          ),
+                          child: const Text('Comprar'),
                         ),
                       ),
                     ],
@@ -187,39 +114,16 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _macroTile(
-    String title,
-    String value,
-  ) {
-
+  Widget _row(String title, String value) {
     return Padding(
-
-      padding:
-          const EdgeInsets.only(bottom: 12),
-
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
-
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween,
-
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
+          Text(title),
           Text(
-
-            title,
-
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-
-          Text(
-
             value,
-
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),

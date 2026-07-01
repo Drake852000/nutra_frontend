@@ -12,126 +12,70 @@ import '../../widgets/restaurant_section.dart';
 import '../../widgets/products_section.dart';
 
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() =>
-      _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   void initState() {
     super.initState();
 
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final productProvider = context.read<ProductProvider>();
+      final restaurantProvider = context.read<RestaurantProvider>();
 
-      context
-          .read<ProductProvider>()
-          .loadProducts();
-
-      context
-          .read<RestaurantProvider>()
-          .loadRestaurants();
+      productProvider.loadProducts();
+      restaurantProvider.loadRestaurants();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final productProvider =
-        context.watch<ProductProvider>();
-
-    final restaurantProvider =
-        context.watch<RestaurantProvider>();
+    final productProvider = context.watch<ProductProvider>();
+    final restaurantProvider = context.watch<RestaurantProvider>();
 
     return Scaffold(
-
       appBar: AppBar(
-
-        title: const Text(
-          'Healthy Food',
-        ),
-
+        title: const Text('Healthy Food'),
         actions: [
-
           IconButton(
-
             onPressed: () {},
-
-            icon: const Icon(
-              Icons.notifications_none,
-            ),
+            icon: const Icon(Icons.notifications_none),
           ),
         ],
       ),
-
       body: SingleChildScrollView(
-
         padding: const EdgeInsets.all(16),
-
         child: Column(
-
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            // HEADER
-
             const HomeHeader(),
-
             const SizedBox(height: 24),
-
-            // SEARCH BAR
-
             const HomeSearchBar(),
-
             const SizedBox(height: 24),
-
-            // CATEGORY LIST
-
             const CategoryList(),
-
             const SizedBox(height: 32),
-
-            // RECOMMENDED SECTION
 
             RecommendedSection(
-              products:
-                  productProvider.products,
+              products: productProvider.products,
             ),
 
             const SizedBox(height: 32),
-
-            // RESTAURANTS SECTION
 
             RestaurantSection(
-              restaurants:
-                  restaurantProvider
-                      .restaurants,
+              restaurants: restaurantProvider.restaurants,
             ),
 
             const SizedBox(height: 32),
 
-            // LOADING
-
             if (productProvider.isLoading)
-
-              const Center(
-                child:
-                    CircularProgressIndicator(),
-              )
-
+              const Center(child: CircularProgressIndicator())
             else
-
-              // PRODUCTS SECTION
-
               ProductsSection(
-                products:
-                    productProvider.products,
+                products: productProvider.products,
               ),
           ],
         ),

@@ -1,14 +1,12 @@
 import '../models/product_model.dart';
-import '../services/mock/product_mock_service.dart';
+import '../services/api/product_api_service.dart';
 
 class ProductRepository {
+  final ProductApiService apiService;
 
-  final ProductMockService mockService;
-
-  ProductRepository(this.mockService);
+  ProductRepository(this.apiService);
 
   Future<List<ProductModel>> getProducts() {
-
-    return mockService.getProducts();
+    return apiService.getProducts();
   }
 }

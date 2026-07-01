@@ -4,7 +4,6 @@ import '../models/cart_item_model.dart';
 import '../models/product_model.dart';
 
 class CartProvider extends ChangeNotifier {
-
   final List<CartItemModel> _items = [];
 
   List<CartItemModel> get items => _items;
@@ -12,17 +11,13 @@ class CartProvider extends ChangeNotifier {
   // ADD PRODUCT
 
   void addToCart(ProductModel product) {
-
     final index = _items.indexWhere(
       (item) => item.product.id == product.id,
     );
 
     if (index >= 0) {
-
       _items[index].quantity++;
-
     } else {
-
       _items.add(
         CartItemModel(product: product),
       );
@@ -34,13 +29,11 @@ class CartProvider extends ChangeNotifier {
   // INCREASE QUANTITY
 
   void increaseQuantity(ProductModel product) {
-
     final index = _items.indexWhere(
       (item) => item.product.id == product.id,
     );
 
     if (index >= 0) {
-
       _items[index].quantity++;
 
       notifyListeners();
@@ -50,19 +43,14 @@ class CartProvider extends ChangeNotifier {
   // DECREASE QUANTITY
 
   void decreaseQuantity(ProductModel product) {
-
     final index = _items.indexWhere(
       (item) => item.product.id == product.id,
     );
 
     if (index >= 0) {
-
       if (_items[index].quantity > 1) {
-
         _items[index].quantity--;
-
       } else {
-
         _items.removeAt(index);
       }
 
@@ -73,7 +61,6 @@ class CartProvider extends ChangeNotifier {
   // REMOVE PRODUCT
 
   void removeFromCart(ProductModel product) {
-
     _items.removeWhere(
       (item) => item.product.id == product.id,
     );
@@ -84,7 +71,6 @@ class CartProvider extends ChangeNotifier {
   // CLEAR CART
 
   void clearCart() {
-
     _items.clear();
 
     notifyListeners();
@@ -93,11 +79,9 @@ class CartProvider extends ChangeNotifier {
   // TOTAL PRICE
 
   double get totalPrice {
-
     double total = 0;
 
     for (var item in _items) {
-
       total += item.product.price * item.quantity;
     }
 
@@ -107,11 +91,9 @@ class CartProvider extends ChangeNotifier {
   // TOTAL CALORIES
 
   int get totalCalories {
-
     int total = 0;
 
     for (var item in _items) {
-
       total += item.product.calories * item.quantity;
     }
 
@@ -120,12 +102,10 @@ class CartProvider extends ChangeNotifier {
 
   // TOTAL PROTEIN
 
-  int get totalProtein {
-
-    int total = 0;
+  double get totalProtein {
+    double total = 0;
 
     for (var item in _items) {
-
       total += item.product.protein * item.quantity;
     }
 
@@ -134,12 +114,10 @@ class CartProvider extends ChangeNotifier {
 
   // TOTAL CARBS
 
-  int get totalCarbs {
-
-    int total = 0;
+  double get totalCarbs {
+    double total = 0;
 
     for (var item in _items) {
-
       total += item.product.carbs * item.quantity;
     }
 
@@ -148,12 +126,10 @@ class CartProvider extends ChangeNotifier {
 
   // TOTAL FAT
 
-  int get totalFat {
-
-    int total = 0;
+  double get totalFat {
+    double total = 0;
 
     for (var item in _items) {
-
       total += item.product.fat * item.quantity;
     }
 

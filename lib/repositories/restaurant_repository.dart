@@ -1,14 +1,12 @@
 import '../models/restaurant_model.dart';
-import '../services/mock/restaurant_mock_service.dart';
+import '../services/api/restaurant_api_service.dart';
 
 class RestaurantRepository {
+  final RestaurantApiService apiService;
 
-  final RestaurantMockService mockService;
-
-  RestaurantRepository(this.mockService);
+  RestaurantRepository(this.apiService);
 
   Future<List<RestaurantModel>> getRestaurants() {
-
-    return mockService.getRestaurants();
+    return apiService.getRestaurants();
   }
 }

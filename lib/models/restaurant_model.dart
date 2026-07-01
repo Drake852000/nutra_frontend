@@ -1,16 +1,22 @@
 class RestaurantModel {
-
-  final int id;
   final String name;
-  final String imageUrl;
-  final double rating;
   final String address;
+  final String contactPhone;
+  final bool isActive;
 
   RestaurantModel({
-    required this.id,
     required this.name,
-    required this.imageUrl,
-    required this.rating,
     required this.address,
+    required this.contactPhone,
+    required this.isActive,
   });
+
+  factory RestaurantModel.fromJson(Map<String, dynamic> json) {
+    return RestaurantModel(
+      name: json["name"] ?? "",
+      address: json["address"] ?? "",
+      contactPhone: json["contactPhone"] ?? "",
+      isActive: json["isActive"] ?? true,
+    );
+  }
 }

@@ -1,83 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'core/theme/app_theme.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/register_screen.dart';
+import 'screens/main_screen.dart';
 
+import 'providers/cart_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/restaurant_provider.dart';
-import 'providers/cart_provider.dart';
 import 'providers/user_provider.dart';
 
 import 'repositories/product_repository.dart';
 import 'repositories/restaurant_repository.dart';
-import 'repositories/user_repository.dart';
 
-import 'services/mock/product_mock_service.dart';
-import 'services/mock/restaurant_mock_service.dart';
-import 'services/mock/user_mock_service.dart';
-
-import 'screens/main_screen.dart';
+import 'services/api/product_api_service.dart';
+import 'services/api/restaurant_api_service.dart';
 
 void main() {
-
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-
       providers: [
-
-        ChangeNotifierProvider(
-
-          create: (_) => ProductProvider(
-
-            ProductRepository(
-              ProductMockService(),
-            ),
-          ),
-        ),
-
-        ChangeNotifierProvider(
-
-          create: (_) => RestaurantProvider(
-
-            RestaurantRepository(
-              RestaurantMockService(),
-            ),
-          ),
-        ),
-
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
         ),
 
         ChangeNotifierProvider(
-
-          create: (_) => UserProvider(
-
-            UserRepository(
-              UserMockService(),
-            ),
+          create: (_) => ProductProvider(
+            ProductRepository(ProductApiService()),
           ),
         ),
+
+        ChangeNotifierProvider(
+          create: (_) => RestaurantProvider(
+            RestaurantRepository(RestaurantApiService()),
+          ),
+        ),
+
+        // 🔥 ESTO ES LO QUE TE FALTABA
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
       ],
-
       child: MaterialApp(
-
         debugShowCheckedModeBanner: false,
-
-        title: 'Healthy Food',
-
-        theme: AppTheme.lightTheme,
-
-        home: const MainScreen(),
+        initialRoute: "/login",
+        routes: {
+          "/login": (context) => const LoginScreen(),
+          "/register": (context) => const RegisterScreen(),
+          "/home": (context) => const MainScreen(),
+        },
       ),
     );
   }
