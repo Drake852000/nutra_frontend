@@ -9,6 +9,7 @@ import 'providers/cart_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/restaurant_provider.dart';
 import 'providers/user_provider.dart';
+import 'providers/menu_provider.dart';
 
 import 'repositories/product_repository.dart';
 import 'repositories/restaurant_repository.dart';
@@ -27,30 +28,42 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+
+        // 🛒 CART
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
         ),
 
+        // 🍽 PRODUCTS
         ChangeNotifierProvider(
           create: (_) => ProductProvider(
             ProductRepository(ProductApiService()),
           ),
         ),
 
+        // 🏪 RESTAURANTS
         ChangeNotifierProvider(
           create: (_) => RestaurantProvider(
             RestaurantRepository(RestaurantApiService()),
           ),
         ),
 
-        // 🔥 ESTO ES LO QUE TE FALTABA
+        // 👤 USER PROFILE
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
         ),
+
+        // 🍜 MENU (IMPORTANTE PARA RESTAURANTE DETAIL)
+        ChangeNotifierProvider(
+          create: (_) => MenuProvider(),
+        ),
       ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+
         initialRoute: "/login",
+
         routes: {
           "/login": (context) => const LoginScreen(),
           "/register": (context) => const RegisterScreen(),
