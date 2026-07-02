@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/restaurant_model.dart';
-import '../../models/meal_model.dart';
 
 class RestaurantApiService {
   final String baseUrl = "http://10.0.2.2:5191";
@@ -25,23 +24,28 @@ class RestaurantApiService {
       headers: await _headers(),
     );
 
-    final data = jsonDecode(response.body) as List;
+    if (response.statusCode != 200) {
+      return [];
+    }
+
+    final List data = jsonDecode(response.body);
 
     return data.map((e) => RestaurantModel.fromJson(e)).toList();
   }
 
-  // 🔥 MENÚ POR RESTAURANTE
-  Future<List<MealModel>> getMenu(String restaurantId) async {
-    final url =
-        "$baseUrl/Catalog/restaurants/menu?RestaurantId=$restaurantId";
-
+  // 🔥 MENÚ POR RESTAURANTE (ARREGLA TU ERROR getMenu)
+  Future<List<dynamic>> getMenu(String restaurantId) async {
     final response = await http.get(
-      Uri.parse(url),
+      Uri.parse(
+        "$baseUrl/Catalog/restaurants/menu?RestaurantId=$restaurantId",
+      ),
       headers: await _headers(),
     );
 
-    final data = jsonDecode(response.body) as List;
+    if (response.statusCode != 200) {
+      return [];
+    }
 
-    return data.map((e) => MealModel.fromJson(e)).toList();
+    return jsonDecode(response.body);
   }
 }

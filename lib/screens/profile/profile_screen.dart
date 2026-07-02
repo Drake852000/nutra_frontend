@@ -40,8 +40,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // =====================
             // 👤 HEADER
+            // =====================
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
@@ -63,14 +66,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  Text(
+                    user.email, // 🔥 ahora sí mostramos algo útil
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
                 ],
               ),
             ),
 
             const SizedBox(height: 20),
 
+            // =====================
             // 🧬 HEALTH PROFILE
-            _sectionTitle("Perfil de Salud"),
+            // =====================
+            const Text(
+              "Perfil de Salud",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
 
             const SizedBox(height: 10),
 
@@ -107,36 +122,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
 
+            // =====================
             // ⚕️ CONDITIONS
-            _sectionTitle("Condiciones"),
+            // =====================
+            const Text(
+              "Condiciones de salud",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
 
             const SizedBox(height: 10),
 
-            user.conditions.isEmpty
-                ? const Text("Sin condiciones registradas")
-                : Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: user.conditions
-                        .map((c) => Chip(label: Text(c)))
-                        .toList(),
-                  ),
-          ],
-        ),
-      ),
-    );
-  }
+            if (user.conditions.isEmpty)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Text("Sin condiciones registradas"),
+              )
+            else
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: user.conditions.map((c) {
+                  return Chip(
+                    label: Text(c.name),
+                    avatar: Icon(
+                      c.type == "Alergia"
+                          ? Icons.warning_amber_rounded
+                          : Icons.health_and_safety,
+                      size: 18,
+                    ),
+                    backgroundColor: c.type == "Alergia"
+                        ? Colors.red.shade50
+                        : Colors.blue.shade50,
+                  );
+                }).toList(),
+              ),
 
-  Widget _sectionTitle(String title) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+            const SizedBox(height: 30),
+
+            // =====================
+            // 📊 RESUMEN EXTRA (más “lleno”)
+            // =====================
+            if (hp != null)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Resumen",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 6),
+                    Text("Tu perfil de salud está configurado correctamente."),
+                  ],
+                ),
+              ),
+          ],
         ),
       ),
     );

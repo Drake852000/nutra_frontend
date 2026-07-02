@@ -19,16 +19,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String query = "";
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final productProvider = context.read<ProductProvider>();
-      final restaurantProvider = context.read<RestaurantProvider>();
-
-      productProvider.loadProducts();
-      restaurantProvider.loadRestaurants();
+      context.read<ProductProvider>().loadProducts();
+      context.read<RestaurantProvider>().loadRestaurants();
     });
   }
 
@@ -36,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final productProvider = context.watch<ProductProvider>();
     final restaurantProvider = context.watch<RestaurantProvider>();
+
+    // 🔥 FILTRO DE PLATOS
+    final filteredProducts = productProvider.products.where((p) {
+      return p.name.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    // 🔥 FILTRO DE RESTAURANTES
+    final filteredRestaurants = restaurantProvider.restaurants.where((r) {
+      return r.name.toLowerCase().contains(query.toLowerCase());
+    }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -54,19 +63,29 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const HomeHeader(),
             const SizedBox(height: 24),
-            const HomeSearchBar(),
+
+            // 🔥 SEARCH BAR (IMPORTANTE)
+            HomeSearchBar(
+              onChanged: (value) {
+                setState(() {
+                  query = value;
+                });
+              },
+            ),
+
             const SizedBox(height: 24),
             const CategoryList(),
+
             const SizedBox(height: 32),
 
             RecommendedSection(
-              products: productProvider.products,
+              products: filteredProducts,
             ),
 
             const SizedBox(height: 32),
 
             RestaurantSection(
-              restaurants: restaurantProvider.restaurants,
+              restaurants: filteredRestaurants,
             ),
 
             const SizedBox(height: 32),
@@ -75,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Center(child: CircularProgressIndicator())
             else
               ProductsSection(
-                products: productProvider.products,
+                products: filteredProducts,
               ),
           ],
         ),

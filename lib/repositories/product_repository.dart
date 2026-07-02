@@ -2,11 +2,11 @@ import '../models/product_model.dart';
 import '../services/api/product_api_service.dart';
 
 class ProductRepository {
-  final ProductApiService apiService;
+  final ProductApiService api;
 
-  ProductRepository(this.apiService);
+  ProductRepository(this.api);
 
   Future<List<ProductModel>> getProducts() {
-    return apiService.getProducts();
+    return api.getProducts();
   }
 }

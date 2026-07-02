@@ -1,6 +1,5 @@
-import '../services/api/restaurant_api_service.dart';
 import '../models/restaurant_model.dart';
-import '../models/meal_model.dart';
+import '../services/api/restaurant_api_service.dart';
 
 class RestaurantRepository {
   final RestaurantApiService apiService;
@@ -11,7 +10,7 @@ class RestaurantRepository {
     return apiService.getRestaurants();
   }
 
-  Future<List<MealModel>> getMenu(String restaurantId) {
+  Future<List<dynamic>> getMenu(String restaurantId) {
     return apiService.getMenu(restaurantId);
   }
 }

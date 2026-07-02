@@ -9,7 +9,6 @@ class UserProvider extends ChangeNotifier {
   final ProfileApiService _service = ProfileApiService();
 
   UserModel? user;
-
   bool isLoading = false;
 
   Future<void> loadUser() async {
@@ -18,28 +17,20 @@ class UserProvider extends ChangeNotifier {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-
       final token = prefs.getString("token");
 
-      if (token == null) {
-        throw Exception("No existe token");
-      }
+      if (token == null) throw Exception("No token");
 
       final decoded = JwtDecoder.decode(token);
-
-      final userId = decoded["sub"];
-
-      print("USER ID JWT: $userId");
+      final userId = decoded["sub"].toString();
 
       user = await _service.getProfile(userId);
     } catch (e) {
-      print(e);
-
+      print("ERROR USER PROVIDER: $e");
       user = null;
     }
 
     isLoading = false;
-
     notifyListeners();
   }
 }
