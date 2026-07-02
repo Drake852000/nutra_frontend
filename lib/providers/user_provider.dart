@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/user_model.dart';
 import '../services/api/profile_api_service.dart';
 
@@ -6,6 +9,7 @@ class UserProvider extends ChangeNotifier {
   final ProfileApiService _service = ProfileApiService();
 
   UserModel? user;
+
   bool isLoading = false;
 
   Future<void> loadUser() async {
@@ -13,15 +17,29 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // 🔥 IMPORTANTE: el backend requiere UserId
-      const userId = "8add076c-3af4-42f7-a77a-3221ce8a8281";
+      final prefs = await SharedPreferences.getInstance();
+
+      final token = prefs.getString("token");
+
+      if (token == null) {
+        throw Exception("No existe token");
+      }
+
+      final decoded = JwtDecoder.decode(token);
+
+      final userId = decoded["sub"];
+
+      print("USER ID JWT: $userId");
 
       user = await _service.getProfile(userId);
     } catch (e) {
+      print(e);
+
       user = null;
     }
 
     isLoading = false;
+
     notifyListeners();
   }
 }
